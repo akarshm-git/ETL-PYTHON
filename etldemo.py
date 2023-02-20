@@ -40,9 +40,9 @@ if BOCResponse.status_code == 200:
     for row in BOCRaw['observations']:
         # later going to compare data from the dates column in BOS source data with another data source.(they have  to be in same data type for that)
         BOCDates.append(datetime.datetime.strptime(row['d'],'%Y-%m-%d'))
-        
+        BOCRates.append(decimal.Decimal(row['FXUSDCAD']['v']))
 
-
+print(BOCRates)
 
 
 
