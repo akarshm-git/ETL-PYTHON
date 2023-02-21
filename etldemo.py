@@ -66,4 +66,17 @@ if BOCResponse.status_code == 200:
     #add CAD column
     expenses = petl.addfield(expenses,'CAD', lambda rec: decimal.Decimal(rec.USD) * rec.rate)
 
+    #initialize database connection
+    try:
+        dbConnection = pymssql.connect(server = destServer,user = "SA", password='SecurePwd123', database= destDatabase)
+    except Exception as e:
+        print('Could not connect to database:'+str(e))
+        sys.exit()
+
+    #populate Expenses database table with expenses output we got above.
+    try:
+        petl.io.todb(expenses,dbConnection,'Expenses')
+    except Exception as e:
+        print('Could not write to database:'+str(e))
     
+    #print(expenses)
