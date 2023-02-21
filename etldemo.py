@@ -1,12 +1,13 @@
-import os #os module for tools to interact with OS and file system
 import configparser
-import sys 
-import petl
-import requests
 import datetime
-import json
 import decimal
+import json
+import os  # os module for tools to interact with OS and file system
+import sys
+import openpyxl
+import petl
 import pymssql
+import requests
 
 #get data from configuration file
 config = configparser.ConfigParser()
@@ -42,7 +43,16 @@ if BOCResponse.status_code == 200:
         BOCDates.append(datetime.datetime.strptime(row['d'],'%Y-%m-%d'))
         BOCRates.append(decimal.Decimal(row['FXUSDCAD']['v']))
 
-print(BOCRates)
+    #create petl table  from column  arrays  and  rename columns
+    exchangeRates = petl.fromcolumns([BOCDates,BOCRates],header = ['date','rate'])
+
+    try:
+        expenses = petl.io.xlsx.fromxlsx('Expenses.xlsx',sheet='Github')
+    except Exception as e:
+        print("could  not open  expenses.xlsx: "+str(e))
+        sys.exit()
+
+    print(expenses)
 
 
 

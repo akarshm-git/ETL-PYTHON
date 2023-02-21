@@ -1,3 +1,6 @@
 {
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "dataworkspace.excludedProjects": [
+        "ETLDemo/ETLDemo.sqlproj"
+    ]
 }
