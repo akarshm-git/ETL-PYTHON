@@ -51,17 +51,19 @@ if BOCResponse.status_code == 200:
     except Exception as e:
         print("could  not open  expenses.xlsx: "+str(e))
         sys.exit()
+#Crucial steps in transforming the data we require intracking exchange rates.
+    #join tables
+    expenses = petl.outerjoin(exchangeRates,expenses,key="date")
+    
+    #fill down missing values
+    expenses = petl.filldown(expenses,'rate')
 
-    print(expenses)
+    #remove dates with no expenses
+    expenses = petl.select(expenses,lambda rec: rec.USD != None)
 
+#Add canadian daat column, populate database as 4 columns exchange rate, USD, CAD
+    
+    #add CAD column
+    expenses = petl.addfield(expenses,'CAD', lambda rec: decimal.Decimal(rec.USD) * rec.rate)
 
-
-
-
-
-
-
-
-
-
-
+    
