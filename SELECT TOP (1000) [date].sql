@@ -1,0 +1,5 @@
+SELECT TOP (1000) [date]
+      ,[USD]
+      ,[rate]
+      ,[CAD]
+  FROM [ETLDemo].[dbo].[Expenses]
